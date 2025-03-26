@@ -1,0 +1,262 @@
+{
+	"info": {
+		"_postman_id": "203edd1c-8a1c-4449-8663-0f024a65c612",
+		"name": "MyNoteBook",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "27515003"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Create User",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"username\" : \"Abhishek\",\r\n  \"email\" : \"Abhishek@gmail.com\",\r\n  \"password\" : \"Ef@604215\",\r\n  \"confirmPassword\" : \"Ef@604215\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/auth",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"auth"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"Abhishek@gmail.com\",\r\n    \"password\": \"Ef@604215\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "auth-token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjdlMzk2ODI3NjBiMjg0MDM4ZWRhMDY5In0sImlhdCI6MTc0Mjk4MTUyNSwiZXhwIjoxNzQyOTg1MTI1fQ.7BYXWdfwUj5MAIz7BMnStNKoeCi4WOE1A0uOqlBzbxE",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/api/auth/getuser",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"auth",
+								"getuser"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Notes",
+			"item": [
+				{
+					"name": "Fetch All Notes",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "auth-token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjdlM2U1MTljNTc5NDZlYzVmMTFjYjI2In0sImlhdCI6MTc0Mjk4ODU2OSwiZXhwIjoxNzQyOTkyMTY5fQ.wh_XnWZMRN2OCPHFVfDD7hEkmt-7tG-lKllgtdpJkXc",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/api/notes/fetchAllNotes",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"notes",
+								"fetchAllNotes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Notes",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "auth-token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjdlM2U1MTljNTc5NDZlYzVmMTFjYjI2In0sImlhdCI6MTc0Mjk5NDA3NiwiZXhwIjoxNzQyOTk3Njc2fQ.e8Af4Yr2UMdZfoi8LFK7GilaHJhfUxnjBe_m28UeOh8",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\":\"Hi Union Bank of India\",\r\n    \"content\":\"1234a6d54as65da\",\r\n    \"tags\":\"Unionbank\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/notes/addNote",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"notes",
+								"addNote"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EditNote",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "auth-token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjdlM2U1MTljNTc5NDZlYzVmMTFjYjI2In0sImlhdCI6MTc0Mjk5NDA3NiwiZXhwIjoxNzQyOTk3Njc2fQ.e8Af4Yr2UMdZfoi8LFK7GilaHJhfUxnjBe_m28UeOh8",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"title\": \"Updated Note Title\",\r\n  \"content\": \"Updated Note Content\",\r\n  \"tags\": [\"updatedTag1\", \"updatedTag2\"]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/notes/editNote/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"notes",
+								"editNote",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "67e3e53ac57946ec5f11cb28"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
