@@ -24,7 +24,7 @@ const addNote = async (req, res) => {
         validator.run(req)
       )
     );
-    const errorResponse = handleValidationErrors(req, res);
+    const errorResponse = handleValidationErrors(req, res); 
     if (errorResponse) return; // Ensure response is returned if validation fails
 
     const { title, content, tags } = req.body;
