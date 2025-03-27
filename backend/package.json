@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "babel src -d dist",
     "start": "nodemon index.js"
   },
   "author": "Abhishek Parmar",
@@ -19,6 +20,9 @@
     "mynotebook-backend": "file:"
   },
   "devDependencies": {
+    "@babel/cli": "^7.27.0",
+    "@babel/core": "^7.26.10",
+    "@babel/preset-env": "^7.26.9",
     "nodemon": "^3.1.9"
   }
 }

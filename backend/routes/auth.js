@@ -1,21 +1,15 @@
 const User = require("../models/User");
 const router = require("express").Router();
-
-const {
-  loginUser,
-  registerUser,
-  fetchUser,
-} = require("../controllers/authController");
+const middlewareFetchUser = require("../middleware/fetchuser");
+const { loginUser, registerUser, getAllUser,} = require("../controllers/authController");
 
 // Create a user using POST request "api/auth" doesn't require auth
 router.post("/", registerUser);
 
-router.post(
-  "/login",
-  loginUser // Validation will now be handled in the controller
-);
+// Login a user using POST request
+router.post( "/login",loginUser);
 
-// Get loggedin user details using POST "api/auth/getuser" login required
-router.post("/getuser", fetchUser);
+// Get a user using POST request 
+router.post( "/getUser", middlewareFetchUser,getAllUser);
 
 module.exports = router;

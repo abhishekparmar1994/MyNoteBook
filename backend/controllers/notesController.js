@@ -18,8 +18,7 @@ const fetchAllNotes = async (req, res) => {
 // Controller to add a new note
 const addNote = async (req, res) => {
   try {
-    console.log("Request Body:", req.body); // Log request body for debugging
-
+    
     await Promise.all(
       [...validateTitle, ...validateContent, ...validateTags].map((validator) =>
         validator.run(req)

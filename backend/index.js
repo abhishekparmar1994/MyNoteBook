@@ -1,3 +1,4 @@
+require('dotenv').config(); // Load environment variables
 const connectToMongo = require("./config/db");
 const express = require("express");
 const app = express();
@@ -9,9 +10,9 @@ const startServer = async () => {
   app.use('/api/auth', require('./routes/auth'));
   app.use('/api/notes', require('./routes/notes'));
   
-  
-  app.listen(3000, () => {
-    console.log("Server is running on http://localhost:3000");
+  const PORT = process.env.PORT || 3000; // Use port from environment variable
+  app.listen(PORT, () => {
+    console.log(`Server is running on http://localhost:${PORT}`);
   });
 };
 

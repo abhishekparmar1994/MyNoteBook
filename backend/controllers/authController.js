@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 const handleValidationErrors = require("../utils/errorHandler");
 const { validateLoginEmail,validatePassword,validateConfirmPassword,validateUsername,} = require("../utils/validators");
 const JWT_SECRET = process.env.JWT_SECRET || "defaultsecret";
-const JWT_EXPIRATION = process.env.JWT_EXPIRATION || "1h";
+const JWT_EXPIRATION = process.env.JWT_EXPIRATION;
 
 // Controller to handle user registration
 const registerUser = async (req, res) => {
@@ -37,7 +37,7 @@ const registerUser = async (req, res) => {
     };
 
     const authToken = jwt.sign(data, JWT_SECRET, {
-      expiresIn: JWT_EXPIRATION,
+      expiresIn:'1d',
     });
 
     res.status(201).json({
@@ -98,7 +98,7 @@ const loginUser = async (req, res) => {
   }
 };
 
-const fetchUser = async (req, res) => {
+const getAllUser = async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select("-password");
     if (!user) {
@@ -115,5 +115,5 @@ const fetchUser = async (req, res) => {
 module.exports = {
   registerUser,
   loginUser,
-  fetchUser,
+  getAllUser,
 };
