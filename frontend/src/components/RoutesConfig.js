@@ -10,13 +10,9 @@ const RoutesConfig = ({ setProgress }) => {
       <div className="container">
         <NoteState>
           <Routes>
-            <Route
-              exact
-              path="/"
-              element={
+            <Route exact path="/" element={
                 <Home></Home>
-              }
-            />
+            }/>
             <Route
               exact
               path="/about"
