@@ -2,8 +2,10 @@ require('dotenv').config(); // Load environment variables
 const connectToMongo = require("./config/db");
 const express = require("express");
 const app = express();
+var cors = require('cors')
 
 app.use(express.json());
+app.use(cors())
 const startServer = async () => {
   await connectToMongo();
   

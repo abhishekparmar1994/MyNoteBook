@@ -45,6 +45,19 @@ const addNote = async (req, res) => {
   }
 };
 
+// Controller to fetch a note by ID
+const fetchNoteById = async (req, res) => {
+  try {
+    const note = await Notes.findById(req.params.id);
+    if (!note || note.user.toString() !== req.user.id) {
+      return res.status(404).send({ error: "Note not found" });
+    }
+    res.json(note);
+  } catch (error) {
+    res.status(500).send({ error: "Internal Server Error" });
+  }
+};
+
 // Controller to edit a note
 const editNote = async (req, res) => {
   try {
@@ -55,7 +68,8 @@ const editNote = async (req, res) => {
     );
     const errorResponse = handleValidationErrors(req, res);
     if (errorResponse) return; // Ensure response is returned if validation fails
-    const { title, content,tags } = req.body;
+
+    const { title, content, tags } = req.body;
     const noteId = req.params.id;
 
     // Check if note exists and belongs to the user
@@ -70,7 +84,7 @@ const editNote = async (req, res) => {
     // Update the note
     const updatedNote = await Notes.findByIdAndUpdate(
       noteId,
-      { title, content,tags },
+      { title, content, tags },
       { new: true }
     );
 
@@ -108,4 +122,5 @@ module.exports = {
   addNote,
   editNote,
   deleteNote,
+  fetchNoteById, // Export the new controller
 };
