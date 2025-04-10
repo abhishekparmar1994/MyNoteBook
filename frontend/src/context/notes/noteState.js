@@ -122,6 +122,7 @@ const NoteState = (props) => {
         error.response?.statusText || error.message
       );
     } finally {
+      fetchNotes();
       setLoading(false);
     }
   };

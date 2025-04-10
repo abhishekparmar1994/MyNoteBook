@@ -5,7 +5,7 @@ import AddNote from "./AddNote";
 
 function Notes() {
   const context = useContext(NoteContext);
-  const { notes, deleteNote, onEdit, loading, fetchNoteById } = context;
+  const { notes, deleteNote, loading, fetchNoteById } = context;
   const [currentNote, setCurrentNote] = useState(null); // State for the note being edited
 
   const handleEdit = async (note) => {
