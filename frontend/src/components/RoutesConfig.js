@@ -2,18 +2,19 @@ import React from "react";
 import { Routes, Route } from "react-router-dom";
 import Home from "./Home";
 import About from "./About";
-import NoteState from "../context/notes/noteState";
+import Login from "./Login";
+import Signup from "./Signup";
 
-const RoutesConfig = () => {
+const RoutesConfig = ({ showAlert }) => {
   return (
-    <main className="main-content" >
+    <main className="main-content">
       <div className="container">
-        <NoteState>
-          <Routes>
-            <Route exact path="/" element={ <Home></Home> }/>
-            <Route exact path="/about" element={ <About></About> }/>
-          </Routes>
-        </NoteState>
+        <Routes>
+          <Route exact path="/" element={<Home showAlert={showAlert} />} />
+          <Route exact path="/about" element={<About />} />
+          <Route exact path="/login" element={<Login showAlert={showAlert} />} />
+          <Route exact path="/signup" element={<Signup showAlert={showAlert} />} />
+        </Routes>
       </div>
     </main>
   );

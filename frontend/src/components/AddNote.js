@@ -1,7 +1,7 @@
 import { React, useContext, useState, useEffect } from "react";
 import NoteContext from "../context/notes/noteContext";
 
-const AddNote = ({ currentNote, setCurrentNote }) => {
+const AddNote = ({ currentNote, setCurrentNote, showAlert }) => {
   const context = useContext(NoteContext);
   const { addNote, onEdit } = context;
 
@@ -10,107 +10,156 @@ const AddNote = ({ currentNote, setCurrentNote }) => {
     title: "",
     content: "",
     tags: "",
-  }); // Use 'tags' as a comma-separated string
+  });
   const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     if (currentNote) {
       setNote({
         ...currentNote,
-        tags: currentNote.tags ? currentNote.tags.join(", ") : "", // Convert tags array to comma-separated string
+        tags: currentNote.tags ? currentNote.tags.join(", ") : "",
       });
     }
   }, [currentNote]);
 
   const validateForm = () => {
     const newErrors = {};
-    if (!note.title.trim()) newErrors.title = "Title is required.";
-    if (!note.content.trim()) newErrors.content = "Content is required.";
+    if (!note.title.trim()) newErrors.title = "Title is required";
+    else if (note.title.trim().length < 3) newErrors.title = "Title must be at least 3 characters";
+    
+    if (!note.content.trim()) newErrors.content = "Content is required";
+    else if (note.content.trim().length < 5) newErrors.content = "Content must be at least 5 characters";
+    
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleClick = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!validateForm()) return;
-    const tagsArray = note.tags
-      .split(",")
-      .map((tag) => tag.trim())
-      .filter((tag) => tag); // Convert string to array
-    if (note._id) {
-      onEdit(note._id, note.title, note.content, tagsArray);
-    } else {
-      addNote(note.title, note.content, tagsArray);
+    if (!validateForm() || isSubmitting) return;
+
+    setIsSubmitting(true);
+    try {
+      const tagsArray = note.tags
+        .split(",")
+        .map((tag) => tag.trim())
+        .filter((tag) => tag);
+
+      if (note._id) {
+        await onEdit(note._id, note.title, note.content, tagsArray);
+        showAlert("Note updated successfully", "success");
+      } else {
+        await addNote(note.title, note.content, tagsArray);
+        showAlert("Note added successfully", "success");
+      }
+      
+      // Reset form
+      setNote({ _id: "", title: "", content: "", tags: "" });
+      setErrors({});
+      setCurrentNote(null);
+    } catch (error) {
+      showAlert(error.message || "Failed to save note", "danger");
+    } finally {
+      setIsSubmitting(false);
     }
-    setNote({ _id: "", title: "", content: "", tags: "" }); // Reset form
-    setErrors({});
-    setCurrentNote(null); // Clear currentNote after submission
   };
 
   const handleChange = (e) => {
-    e.preventDefault();
     setNote({ ...note, [e.target.name]: e.target.value });
+    // Clear error when user starts typing
+    if (errors[e.target.name]) {
+      setErrors({ ...errors, [e.target.name]: "" });
+    }
+  };
+
+  const handleCancel = () => {
+    setNote({ _id: "", title: "", content: "", tags: "" });
+    setErrors({});
+    setCurrentNote(null);
   };
 
   return (
-    <div>
-      <div className="container">
-        <h2>{note._id ? "Edit Note" : "Add Note"}</h2>
-        <form>
-          <input type="hidden" name="_id" value={note._id} />
-          <div className="mb-3">
-            <label htmlFor="title" className="form-label font-weight-bold">
-              Note Title
-            </label>
-            <input
-              type="text"
-              name="title"
-              className={`form-control ${errors.title ? "is-invalid" : ""}`}
-              id="title"
-              value={note.title}
-              onChange={handleChange}
-            />
-            {errors.title && (
-              <div className="invalid-feedback">{errors.title}</div>
-            )}
-          </div>
-          <div className="mb-3">
-            <label htmlFor="content" className="form-label font-weight-bold">
-              Note Content
-            </label>
-            <textarea
-              className={`form-control ${errors.content ? "is-invalid" : ""}`}
-              name="content"
-              id="content"
-              value={note.content}
-              onChange={handleChange}
-            ></textarea>
-            {errors.content && (
-              <div className="invalid-feedback">{errors.content}</div>
-            )}
-          </div>
-          <div className="mb-3">
-            <label htmlFor="tags" className="form-label font-weight-bold">
-              Tags (comma-separated)
-            </label>
-            <input
-              type="text"
-              name="tags"
-              className="form-control"
-              id="tags"
-              value={note.tags}
-              onChange={handleChange}
-            />
-          </div>
+    <div className="my-4">
+      <h2>{note._id ? "Edit Note" : "Add New Note"}</h2>
+      <form onSubmit={handleSubmit}>
+        <input type="hidden" name="_id" value={note._id} />
+        <div className="mb-3">
+          <label htmlFor="title" className="form-label">
+            Title <span className="text-danger">*</span>
+          </label>
+          <input
+            type="text"
+            name="title"
+            className={`form-control ${errors.title ? "is-invalid" : ""}`}
+            id="title"
+            value={note.title}
+            onChange={handleChange}
+            placeholder="Enter note title"
+          />
+          {errors.title && (
+            <div className="invalid-feedback">{errors.title}</div>
+          )}
+        </div>
+        <div className="mb-3">
+          <label htmlFor="content" className="form-label">
+            Content <span className="text-danger">*</span>
+          </label>
+          <textarea
+            className={`form-control ${errors.content ? "is-invalid" : ""}`}
+            name="content"
+            id="content"
+            rows="4"
+            value={note.content}
+            onChange={handleChange}
+            placeholder="Enter note content"
+          ></textarea>
+          {errors.content && (
+            <div className="invalid-feedback">{errors.content}</div>
+          )}
+        </div>
+        <div className="mb-3">
+          <label htmlFor="tags" className="form-label">
+            Tags (comma-separated)
+          </label>
+          <input
+            type="text"
+            name="tags"
+            className="form-control"
+            id="tags"
+            value={note.tags}
+            onChange={handleChange}
+            placeholder="Enter tags separated by commas"
+          />
+        </div>
+        <div className="d-flex gap-2">
           <button
             type="submit"
             className="btn btn-primary"
-            onClick={handleClick}
+            disabled={isSubmitting}
           >
-            {note._id ? "Update Note" : "Add Note"}
+            {isSubmitting ? (
+              <>
+                <span className="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
+                Saving...
+              </>
+            ) : note._id ? (
+              "Update Note"
+            ) : (
+              "Add Note"
+            )}
           </button>
-        </form>
-      </div>
+          {note._id && (
+            <button
+              type="button"
+              className="btn btn-secondary"
+              onClick={handleCancel}
+            >
+              Cancel
+            </button>
+          )}
+        </div>
+      </form>
     </div>
   );
 };
